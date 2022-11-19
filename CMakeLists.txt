@@ -5,4 +5,4 @@ set(CMAKE_CXX_STANDARD 20)
 
 include_directories(lib)
 
-add_executable(BonkSQL src/main.cpp lib/sqlite/sqlite3.c)
+add_executable(BonkSQL src/main.cpp src/DB/db.cpp lib/sqlite/sqlite3.c)

@@ -1,57 +1,30 @@
-#include <iostream>
-#include <string>
-#include "sqlite/sqlite3.h"
+#include "DB/db.h"
 #include "crow/crow_all.h"
 
-static int callback(void *data, int argc, char **argv, char **azColName)
-{
-    int i;
-
-    for(i = 0; i<argc; i++){
-        printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
-    }
-    printf("\n");
-    return 0;
-}
 
 
 
 int main()
 {
-    /*
+    db* testDB = new db;
 
-    sqlite3* db;
-    char* zErrMsg = nullptr;
-    int rc;
+    //Change this when in production builds
+    crow::App<crow::CORSHandler> app;
+    auto& cors = app.get_middleware<crow::CORSHandler>();
+    cors
+            .global()
+            .methods("POST"_method, "GET"_method)
+            .prefix("/")
+            .origin("*");
+    //====================================================================================================
 
-    rc = sqlite3_open("test.db", &db);
-    if(rc)
-    {
-        std::cout << "Could not open the database" << std::endl;
-    }
-    else
-    {
-        std::cout << "Opened the database successfully" << std::endl;
-    }
+    CROW_ROUTE(app, "/")
+            .methods(crow::HTTPMethod::POST)([&testDB](const crow::request& req) {
+                CROW_LOG_INFO << "msg from client: " << req.body;
+                testDB->query(req.body);
+                return "";
+            });
 
-    //example query
-    std::string query = "SELECT * FROM Company";
-    rc = sqlite3_exec(db, query.c_str(), callback, nullptr, &zErrMsg);
-    if(rc != SQLITE_OK)
-    {
-        std::cout << zErrMsg << std::endl;
-        std::cout << "There was an error in the SQL statement!" << std::endl;
-    }
-
-    sqlite3_close(db);
-     */
-
-    crow::SimpleApp app;
-
-    CROW_ROUTE(app, "/")([](){
-        return "Hello world";
-    });
-
-    app.port(8080).multithreaded().run();
+    app.bindaddr("127.0.0.1").port(8080).multithreaded().run();
     return 0;
 }
