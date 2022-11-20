@@ -8,13 +8,16 @@
 #include <string>
 #include <iostream>
 #include "sqlite/sqlite3.h"
+#include "nlohmann/json.hpp"
+
+using json = nlohmann::json;
 
 class db
 {
 public:
     db();
     ~db();
-    void query(const std::string& t_query);
+    json query(const std::string& t_query);
 private:
     sqlite3* m_db{};
     char* m_err = nullptr;

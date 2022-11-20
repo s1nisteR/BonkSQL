@@ -1,12 +1,13 @@
 #include "DB/db.h"
 #include "crow/crow_all.h"
-
+#include "nlohmann/json.hpp"
 
 
 
 int main()
 {
     db* testDB = new db;
+    nlohmann::json response;
 
     //Change this when in production builds
     crow::App<crow::CORSHandler> app;
@@ -19,10 +20,13 @@ int main()
     //====================================================================================================
 
     CROW_ROUTE(app, "/")
-            .methods(crow::HTTPMethod::POST)([&testDB](const crow::request& req) {
-                CROW_LOG_INFO << "msg from client: " << req.body;
-                testDB->query(req.body);
-                return "";
+            .methods(crow::HTTPMethod::POST)([&testDB, &response](const crow::request& req, crow::response& res) {
+                CROW_LOG_INFO << "msg from client: " << req.body;  //for debug purposes
+                response = testDB->query(req.body);
+                res.add_header("Access-Control-Allow-Origin", "*");
+                res.add_header("Content-Type", "application/json");
+                res.write(response.dump());
+                res.end();
             });
 
     app.bindaddr("127.0.0.1").port(8080).multithreaded().run();
