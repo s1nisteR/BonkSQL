@@ -8,7 +8,7 @@
 </head>
 <body>
 <!-- partial:index.partial.html -->
-<h2>Demo Registration and Login Forms</h2>
+<h2 id="status">Demo Registration and Login Forms</h2>
 <div class="container" id="container">
 	<div class="form-container sign-up-container">
 		<form action="#">
@@ -19,9 +19,9 @@
 				<a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
 			</div>
 			<span>or use your email for registration</span>
-			<input type="text" placeholder="Name" />
-			<input type="email" placeholder="Email" />
-			<input type="password" placeholder="Password" />
+			<input id="rname" type="text" placeholder="Name" />
+			<input id="remail" type="email" placeholder="Email" />
+			<input id="rpassword" type="password" placeholder="Password" />
 			<button id="register">Sign Up</button>
 		</form>
 	</div>
@@ -34,8 +34,8 @@
 				<a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
 			</div>
 			<span>or use your account</span>
-			<input type="email" placeholder="Email" />
-			<input type="password" placeholder="Password" />
+			<input id="lemail" type="email" placeholder="Email" />
+			<input id="lpassword" type="password" placeholder="Password" />
 			<a href="#">Forgot your password?</a>
 			<button id="login">Sign In</button>
 		</form>
