@@ -1,12 +1,12 @@
 #include "DB/db.h"
 #include "crow/crow_all.h"
 #include "nlohmann/json.hpp"
-
+#include <iostream>
 
 
 int main()
 {
-    db* testDB = new db;
+    db* testDB = new db("testDB");
     nlohmann::json response;
 
     //Change this when in production builds
@@ -30,5 +30,7 @@ int main()
             });
 
     app.bindaddr("127.0.0.1").port(8080).multithreaded().run();
+    std::cout << "Saving and Exiting..." << std::endl;
+    delete(testDB);
     return 0;
 }
